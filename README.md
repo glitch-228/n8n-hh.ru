@@ -170,16 +170,34 @@ python -m hh_automation.server
 Поиск вакансий.
 
 **Параметры:**
-- `text` — поисковый запрос (по умолчанию: "Frontend")
+- `text` — поисковый запрос (по умолчанию: "Frontend"). Поддерживает минус-слова, например: `"python -django"`
 - `page` — номер страницы, начиная с 0 (по умолчанию: 0)
-- `work_format` — формат работы (по умолчанию: "удалённо")
-- `experience` — опыт работы (по умолчанию: "нет опыта")
+- `work_format` — формат работы: `ON_SITE|REMOTE|HYBRID|FIELD_WORK` (по умолчанию: "удалённо")
+- `experience` — опыт работы: `noExperience|between1And3|between3And6|moreThan6` (по умолчанию: "нет опыта")
 
-Можно передавать значения как по-русски, так и в формате HH (например, `remote`, `noExperience`).
+Можно передавать значения `work_format` и `experience` как по-русски, так и в формате HH (например, `REMOTE`, `noExperience`).
+
+**Доп. фильтры (по умолчанию пустые):**
+- `search_field` — `name|company_name|description`
+- `order_by` — `publication_time|salary_desc|salary_asc|relevance|distance`
+- `employment` — `full|part|project|volunteer|probation`
+- `schedule` — `fullDay|shift|flexible|remote|flyInFlyOut`
+- `education_level` — `secondary|special_secondary|unfinished_higher|higher|bachelor|master|candidate|doctor`
+- `employment_form` — `FULL|PART|PROJECT|FLY_IN_FLY_OUT|SIDE_JOB`
+- `working_hours` — `HOURS_2|HOURS_3|HOURS_4|HOURS_5|HOURS_6|HOURS_7|HOURS_8|HOURS_9|HOURS_10|HOURS_11|HOURS_12|HOURS_24|FLEXIBLE|OTHER`
+- `work_schedule_by_days` — `SIX_ON_ONE_OFF|FIVE_ON_TWO_OFF|FOUR_ON_FOUR_OFF|FOUR_ON_THREE_OFF|FOUR_ON_TWO_OFF|THREE_ON_THREE_OFF|THREE_ON_TWO_OFF|TWO_ON_TWO_OFF|TWO_ON_ONE_OFF|ONE_ON_THREE_OFF|ONE_ON_TWO_OFF|WEEKEND|FLEXIBLE|OTHER`
+- `salary` — целое число
+- `currency` — `AZN|BYR|EUR|GEL|KGS|KZT|RUR|UAH|USD|UZS`
+- `salary_per_mode` — `MONTH|SHIFT|HOUR|FLY_IN_FLY_OUT|SERVICE`
+- `salary_frequency` — `DAILY|WEEKLY|TWICE_PER_MONTH|MONTHLY|PER_PROJECT`
+- `only_with_salary` — `true|false`
+- `label` — `with_address|accept_handicapped|not_from_agency|accept_kids|accredited_it|low_performance|internship|night_shifts|with_salary|accept_teens`
+- `driver_license_types` — `A|B|C|D|E|BE|CE|DE|TM|TB`
+- `accept_temporary` — `true|false`
 
 **Пример:**
 ```bash
-curl "http://127.0.0.1:8000/search?text=Python&page=0&work_format=remote&experience=noExperience"
+curl "http://127.0.0.1:8000/search?text=Python&page=0&work_format=REMOTE&experience=noExperience"
 ```
 
 ### POST /apply

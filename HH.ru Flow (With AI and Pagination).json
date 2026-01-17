@@ -18,6 +18,70 @@
               "stringValue": "нет опыта"
             },
             {
+              "name": "search_field",
+              "stringValue": ""
+            },
+            {
+              "name": "order_by",
+              "stringValue": ""
+            },
+            {
+              "name": "employment",
+              "stringValue": ""
+            },
+            {
+              "name": "schedule",
+              "stringValue": ""
+            },
+            {
+              "name": "education_level",
+              "stringValue": ""
+            },
+            {
+              "name": "employment_form",
+              "stringValue": ""
+            },
+            {
+              "name": "working_hours",
+              "stringValue": ""
+            },
+            {
+              "name": "work_schedule_by_days",
+              "stringValue": ""
+            },
+            {
+              "name": "salary",
+              "stringValue": ""
+            },
+            {
+              "name": "currency",
+              "stringValue": ""
+            },
+            {
+              "name": "salary_per_mode",
+              "stringValue": ""
+            },
+            {
+              "name": "salary_frequency",
+              "stringValue": ""
+            },
+            {
+              "name": "only_with_salary",
+              "stringValue": ""
+            },
+            {
+              "name": "label",
+              "stringValue": ""
+            },
+            {
+              "name": "driver_license_types",
+              "stringValue": ""
+            },
+            {
+              "name": "accept_temporary",
+              "stringValue": ""
+            },
+            {
               "name": "max_pages",
               "stringValue": "1"
             },
@@ -40,7 +104,7 @@
     },
     {
       "parameters": {
-        "url": "=http://127.0.0.1:8000/search?text={{ $json.search_query }}&page={{ $json.current_page }}&work_format={{ $json.work_format }}&experience={{ $json.experience }}",
+        "url": "=http://127.0.0.1:8000/search?text={{ $json.search_query }}&page={{ $json.current_page }}&work_format={{ $json.work_format }}&experience={{ $json.experience }}&search_field={{ $json.search_field }}&order_by={{ $json.order_by }}&employment={{ $json.employment }}&schedule={{ $json.schedule }}&education_level={{ $json.education_level }}&employment_form={{ $json.employment_form }}&working_hours={{ $json.working_hours }}&work_schedule_by_days={{ $json.work_schedule_by_days }}&salary={{ $json.salary }}&currency={{ $json.currency }}&salary_per_mode={{ $json.salary_per_mode }}&salary_frequency={{ $json.salary_frequency }}&only_with_salary={{ $json.only_with_salary }}&label={{ $json.label }}&driver_license_types={{ $json.driver_license_types }}&accept_temporary={{ $json.accept_temporary }}",
         "options": {}
       },
       "id": "ad60fd39-f443-49f6-bf26-0fb6788e5cf2",
@@ -203,6 +267,70 @@
             {
               "name": "experience",
               "stringValue": "={{ $('Merge').item.json.experience }}"
+            },
+            {
+              "name": "search_field",
+              "stringValue": "={{ $('Merge').item.json.search_field }}"
+            },
+            {
+              "name": "order_by",
+              "stringValue": "={{ $('Merge').item.json.order_by }}"
+            },
+            {
+              "name": "employment",
+              "stringValue": "={{ $('Merge').item.json.employment }}"
+            },
+            {
+              "name": "schedule",
+              "stringValue": "={{ $('Merge').item.json.schedule }}"
+            },
+            {
+              "name": "education_level",
+              "stringValue": "={{ $('Merge').item.json.education_level }}"
+            },
+            {
+              "name": "employment_form",
+              "stringValue": "={{ $('Merge').item.json.employment_form }}"
+            },
+            {
+              "name": "working_hours",
+              "stringValue": "={{ $('Merge').item.json.working_hours }}"
+            },
+            {
+              "name": "work_schedule_by_days",
+              "stringValue": "={{ $('Merge').item.json.work_schedule_by_days }}"
+            },
+            {
+              "name": "salary",
+              "stringValue": "={{ $('Merge').item.json.salary }}"
+            },
+            {
+              "name": "currency",
+              "stringValue": "={{ $('Merge').item.json.currency }}"
+            },
+            {
+              "name": "salary_per_mode",
+              "stringValue": "={{ $('Merge').item.json.salary_per_mode }}"
+            },
+            {
+              "name": "salary_frequency",
+              "stringValue": "={{ $('Merge').item.json.salary_frequency }}"
+            },
+            {
+              "name": "only_with_salary",
+              "stringValue": "={{ $('Merge').item.json.only_with_salary }}"
+            },
+            {
+              "name": "label",
+              "stringValue": "={{ $('Merge').item.json.label }}"
+            },
+            {
+              "name": "driver_license_types",
+              "stringValue": "={{ $('Merge').item.json.driver_license_types }}"
+            },
+            {
+              "name": "accept_temporary",
+              "stringValue": "={{ $('Merge').item.json.accept_temporary }}"
             },
             {
               "name": "max_pages",

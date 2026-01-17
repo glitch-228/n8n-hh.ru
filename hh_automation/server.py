@@ -75,7 +75,26 @@ async def search_vacancies(
     experience: str = Query(
         default=settings.default_experience,
         description="Experience (например, нет опыта)"
-    )
+    ),
+    search_field: Optional[str] = Query(default=None, description="Search field (name|company_name|description)"),
+    order_by: Optional[str] = Query(
+        default=None,
+        description="Order by (publication_time|salary_desc|salary_asc|relevance|distance)"
+    ),
+    employment: Optional[str] = Query(default=None, description="Employment (full|part|project|volunteer|probation)"),
+    schedule: Optional[str] = Query(default=None, description="Schedule (fullDay|shift|flexible|remote|flyInFlyOut)"),
+    education_level: Optional[str] = Query(default=None, description="Education level"),
+    employment_form: Optional[str] = Query(default=None, description="Employment form"),
+    working_hours: Optional[str] = Query(default=None, description="Working hours"),
+    work_schedule_by_days: Optional[str] = Query(default=None, description="Work schedule by days"),
+    salary: Optional[str] = Query(default=None, description="Salary"),
+    currency: Optional[str] = Query(default=None, description="Currency"),
+    salary_per_mode: Optional[str] = Query(default=None, description="Salary per mode"),
+    salary_frequency: Optional[str] = Query(default=None, description="Salary frequency"),
+    only_with_salary: Optional[str] = Query(default=None, description="Only with salary (true|false)"),
+    label: Optional[str] = Query(default=None, description="Labels"),
+    driver_license_types: Optional[str] = Query(default=None, description="Driver license types"),
+    accept_temporary: Optional[str] = Query(default=None, description="Accept temporary (true|false)")
 ) -> list[dict]:
     """
     Поиск вакансий на HH.ru.
@@ -95,7 +114,23 @@ async def search_vacancies(
             query=text,
             page_num=page,
             work_format=work_format,
-            experience=experience
+            experience=experience,
+            search_field=search_field,
+            order_by=order_by,
+            employment=employment,
+            schedule=schedule,
+            education_level=education_level,
+            employment_form=employment_form,
+            working_hours=working_hours,
+            work_schedule_by_days=work_schedule_by_days,
+            salary=salary,
+            currency=currency,
+            salary_per_mode=salary_per_mode,
+            salary_frequency=salary_frequency,
+            only_with_salary=only_with_salary,
+            label=label,
+            driver_license_types=driver_license_types,
+            accept_temporary=accept_temporary
         )
         return vacancies
     except FileNotFoundError as e:

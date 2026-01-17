@@ -50,6 +50,15 @@ def _map_filter_value(value: Optional[str], mapping: dict[str, str]) -> Optional
     return mapping.get(normalized, value.strip())
 
 
+def _normalize_param(value: Optional[str]) -> Optional[str]:
+    if value is None:
+        return None
+    normalized = value.strip()
+    if not normalized:
+        return None
+    return normalized
+
+
 @dataclass
 class Vacancy:
     """Модель данных вакансии."""
@@ -108,7 +117,23 @@ class VacancySearchService:
         query: Optional[str] = None,
         page_num: int = 0,
         work_format: Optional[str] = None,
-        experience: Optional[str] = None
+        experience: Optional[str] = None,
+        search_field: Optional[str] = None,
+        order_by: Optional[str] = None,
+        employment: Optional[str] = None,
+        schedule: Optional[str] = None,
+        education_level: Optional[str] = None,
+        employment_form: Optional[str] = None,
+        working_hours: Optional[str] = None,
+        work_schedule_by_days: Optional[str] = None,
+        salary: Optional[str] = None,
+        currency: Optional[str] = None,
+        salary_per_mode: Optional[str] = None,
+        salary_frequency: Optional[str] = None,
+        only_with_salary: Optional[str] = None,
+        label: Optional[str] = None,
+        driver_license_types: Optional[str] = None,
+        accept_temporary: Optional[str] = None
     ) -> list[dict]:
         """
         Поиск вакансий, соответствующих запросу.
@@ -118,6 +143,22 @@ class VacancySearchService:
             page_num: Номер страницы для пагинации (начиная с 0).
             work_format: Формат работы (например, "удалённо").
             experience: Опыт работы (например, "нет опыта").
+            search_field: Поле поиска (name|company_name|description).
+            order_by: Сортировка (publication_time|salary_desc|salary_asc|relevance|distance).
+            employment: Тип занятости (full|part|project|volunteer|probation).
+            schedule: График работы (fullDay|shift|flexible|remote|flyInFlyOut).
+            education_level: Уровень образования.
+            employment_form: Форма занятости.
+            working_hours: Рабочие часы.
+            work_schedule_by_days: График по дням.
+            salary: Зарплата (целое число).
+            currency: Валюта зарплаты.
+            salary_per_mode: Период зарплаты.
+            salary_frequency: Частота выплат.
+            only_with_salary: Только с зарплатой (true|false).
+            label: Метки вакансий.
+            driver_license_types: Типы водительских прав.
+            accept_temporary: Временная занятость (true|false).
             
         Возвращает:
             Список словарей вакансий с заголовком, URL, работодателем и описанием.
@@ -153,6 +194,28 @@ class VacancySearchService:
                 params["work_format"] = work_format_value
             if experience_value:
                 params["experience"] = experience_value
+            extra_params = {
+                "search_field": search_field,
+                "order_by": order_by,
+                "employment": employment,
+                "schedule": schedule,
+                "education_level": education_level,
+                "employment_form": employment_form,
+                "working_hours": working_hours,
+                "work_schedule_by_days": work_schedule_by_days,
+                "salary": salary,
+                "currency": currency,
+                "salary_per_mode": salary_per_mode,
+                "salary_frequency": salary_frequency,
+                "only_with_salary": only_with_salary,
+                "label": label,
+                "driver_license_types": driver_license_types,
+                "accept_temporary": accept_temporary,
+            }
+            for key, value in extra_params.items():
+                normalized = _normalize_param(value)
+                if normalized is not None:
+                    params[key] = normalized
 
             url = f"https://hh.ru/search/vacancy?{urlencode(params)}"
             
