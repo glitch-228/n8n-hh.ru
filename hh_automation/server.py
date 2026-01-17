@@ -15,6 +15,7 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 logger = logging.getLogger("HHServer")
+settings = get_settings()
 
 
 class ApplyRequest(BaseModel):
@@ -65,18 +66,37 @@ apply_service = VacancyApplyService()
 
 @app.get("/search")
 async def search_vacancies(
-    text: str = Query(default="Frontend", description="Search query text"),
-    page: int = Query(default=0, ge=0, description="Page number (0-indexed)")
+    text: str = Query(default=settings.default_search_text, description="Search query text"),
+    page: int = Query(default=0, ge=0, description="Page number (0-indexed)"),
+    work_format: str = Query(
+        default=settings.default_work_format,
+        description="Work format (например, удалённо)"
+    ),
+    experience: str = Query(
+        default=settings.default_experience,
+        description="Experience (например, нет опыта)"
+    )
 ) -> list[dict]:
     """
     Поиск вакансий на HH.ru.
     
     Возвращает список вакансий с заголовком, URL, работодателем и описанием.
     """
-    logger.info(f"Search request: text='{text}', page={page}")
+    logger.info(
+        "Search request: text='%s', page=%s, work_format='%s', experience='%s'",
+        text,
+        page,
+        work_format,
+        experience
+    )
     
     try:
-        vacancies = await search_service.search(query=text, page_num=page)
+        vacancies = await search_service.search(
+            query=text,
+            page_num=page,
+            work_format=work_format,
+            experience=experience
+        )
         return vacancies
     except FileNotFoundError as e:
         raise HTTPException(status_code=401, detail=str(e))
@@ -117,11 +137,10 @@ async def health_check() -> dict:
 def run():
     """Запуск сервера."""
     import uvicorn
-    settings = get_settings()
     
     logger.info(f"Starting HH Automation API on http://{settings.server_host}:{settings.server_port}")
     logger.info("Endpoints:")
-    logger.info("  GET  /search?text=Frontend&page=0")
+    logger.info("  GET  /search?text=Frontend&page=0&work_format=удалённо&experience=нет опыта")
     logger.info("  POST /apply  { 'url': '...', 'message': '...' }")
     logger.info("  GET  /health")
     logger.info("  GET  /docs  (Swagger UI)")

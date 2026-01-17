@@ -3,6 +3,7 @@
 import logging
 from dataclasses import dataclass
 from typing import Optional
+from urllib.parse import urlencode
 
 from playwright.async_api import Page
 
@@ -10,6 +11,43 @@ from ..config import get_settings
 from .browser import browser_manager
 
 logger = logging.getLogger(__name__)
+
+WORK_FORMAT_MAP = {
+    "удалённо": "REMOTE",
+    "удаленно": "REMOTE",
+    "remote": "REMOTE",
+    "в офисе": "ON_SITE",
+    "офис": "ON_SITE",
+    "office": "ON_SITE",
+    "гибрид": "HYBRID",
+    "hybrid": "HYBRID",
+    "разъездной": "FIELD_WORK",
+    "field": "FIELD_WORK",
+    "field work": "FIELD_WORK",
+    "field_work": "FIELD_WORK",
+}
+
+EXPERIENCE_MAP = {
+    "нет опыта": "noExperience",
+    "noexperience": "noExperience",
+    "1-3": "between1And3",
+    "от 1 до 3": "between1And3",
+    "between1and3": "between1And3",
+    "3-6": "between3And6",
+    "от 3 до 6": "between3And6",
+    "between3and6": "between3And6",
+    "более 6": "moreThan6",
+    "morethan6": "moreThan6",
+}
+
+
+def _map_filter_value(value: Optional[str], mapping: dict[str, str]) -> Optional[str]:
+    if value is None:
+        return None
+    normalized = value.strip().lower()
+    if not normalized:
+        return None
+    return mapping.get(normalized, value.strip())
 
 
 @dataclass
@@ -68,7 +106,9 @@ class VacancySearchService:
     async def search(
         self,
         query: Optional[str] = None,
-        page_num: int = 0
+        page_num: int = 0,
+        work_format: Optional[str] = None,
+        experience: Optional[str] = None
     ) -> list[dict]:
         """
         Поиск вакансий, соответствующих запросу.
@@ -76,6 +116,8 @@ class VacancySearchService:
         Аргументы:
             query: Текст запроса. По умолчанию используется значение из настроек.
             page_num: Номер страницы для пагинации (начиная с 0).
+            work_format: Формат работы (например, "удалённо").
+            experience: Опыт работы (например, "нет опыта").
             
         Возвращает:
             Список словарей вакансий с заголовком, URL, работодателем и описанием.
@@ -85,16 +127,34 @@ class VacancySearchService:
             FileNotFoundError: Если файл сессии не найден.
         """
         query = query or self._settings.default_search_text
-        
-        logger.info(f"Searching vacancies: query='{query}', page={page_num}")
+        work_format = work_format or self._settings.default_work_format
+        experience = experience or self._settings.default_experience
+
+        work_format_value = _map_filter_value(work_format, WORK_FORMAT_MAP)
+        experience_value = _map_filter_value(experience, EXPERIENCE_MAP)
+
+        logger.info(
+            "Searching vacancies: query='%s', page=%s, work_format='%s', experience='%s'",
+            query,
+            page_num,
+            work_format_value,
+            experience_value
+        )
 
         async with browser_manager.get_page(use_session=True) as page:
             # Сборка URL для поиска
-            url = (
-                f"https://hh.ru/search/vacancy?"
-                f"text={query}&area={self._settings.area_code}"
-                f"&items_on_page=20&page={page_num}"
-            )
+            params = {
+                "text": query,
+                "area": self._settings.area_code,
+                "items_on_page": 20,
+                "page": page_num
+            }
+            if work_format_value:
+                params["work_format"] = work_format_value
+            if experience_value:
+                params["experience"] = experience_value
+
+            url = f"https://hh.ru/search/vacancy?{urlencode(params)}"
             
             await page.goto(url, wait_until="domcontentloaded")
             

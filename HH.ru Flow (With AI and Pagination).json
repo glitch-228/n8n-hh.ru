@@ -10,6 +10,14 @@
               "stringValue": "Python Developer"
             },
             {
+              "name": "work_format",
+              "stringValue": "удалённо"
+            },
+            {
+              "name": "experience",
+              "stringValue": "нет опыта"
+            },
+            {
               "name": "max_pages",
               "stringValue": "1"
             },
@@ -32,7 +40,7 @@
     },
     {
       "parameters": {
-        "url": "=http://127.0.0.1:8000/search?text={{ $json.search_query }}&page={{ $json.current_page }}",
+        "url": "=http://127.0.0.1:8000/search?text={{ $json.search_query }}&page={{ $json.current_page }}&work_format={{ $json.work_format }}&experience={{ $json.experience }}",
         "options": {}
       },
       "id": "ad60fd39-f443-49f6-bf26-0fb6788e5cf2",
@@ -187,6 +195,14 @@
             {
               "name": "search_query",
               "stringValue": "={{ $('Merge').item.json.search_query }}"
+            },
+            {
+              "name": "work_format",
+              "stringValue": "={{ $('Merge').item.json.work_format }}"
+            },
+            {
+              "name": "experience",
+              "stringValue": "={{ $('Merge').item.json.experience }}"
             },
             {
               "name": "max_pages",

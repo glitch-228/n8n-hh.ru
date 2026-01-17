@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     # Настройки поиска
     default_search_text: str = Field(default="Frontend", alias="DEFAULT_SEARCH_TEXT")
     area_code: str = Field(default="113", alias="AREA_CODE")  # Russia
+    default_work_format: str = Field(default="удалённо", alias="DEFAULT_WORK_FORMAT")
+    default_experience: str = Field(default="нет опыта", alias="DEFAULT_EXPERIENCE")
 
     # Настройки браузера
     browser_headless: bool = Field(default=True, alias="BROWSER_HEADLESS")

@@ -43,6 +43,8 @@ SERVER_PORT=8000
 # Настройки поиска
 DEFAULT_SEARCH_TEXT=Frontend
 AREA_CODE=113
+DEFAULT_WORK_FORMAT=удалённо
+DEFAULT_EXPERIENCE=нет опыта
 
 # Настройки браузера (опционально)
 BROWSER_HEADLESS=true
@@ -170,10 +172,14 @@ python -m hh_automation.server
 **Параметры:**
 - `text` — поисковый запрос (по умолчанию: "Frontend")
 - `page` — номер страницы, начиная с 0 (по умолчанию: 0)
+- `work_format` — формат работы (по умолчанию: "удалённо")
+- `experience` — опыт работы (по умолчанию: "нет опыта")
+
+Можно передавать значения как по-русски, так и в формате HH (например, `remote`, `noExperience`).
 
 **Пример:**
 ```bash
-curl "http://127.0.0.1:8000/search?text=Python&page=0"
+curl "http://127.0.0.1:8000/search?text=Python&page=0&work_format=remote&experience=noExperience"
 ```
 
 ### POST /apply

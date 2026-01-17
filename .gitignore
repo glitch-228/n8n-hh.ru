@@ -13,6 +13,10 @@ env/
 hh_session.json
 *.session
 
+# Sessions & Temporary Data
+sess/
+data/
+
 # IDEs
 .vscode/
 .idea/
